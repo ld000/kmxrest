@@ -145,18 +145,6 @@ public class OkHttpUtils {
     }
 
     /**
-     * post异步请求
-     * 
-     * @param url 请求地址
-     * @param params 提交参数
-     * @param files 提交的文件
-     * @param callback 回调
-     */
-    public static void post(String url, Headers headers, Map<String, String> params, Map<String, File> files, Callback callback) {
-        createPostCall(url, headers, params, files).enqueue(callback);
-    }
-
-    /**
      * put 同步请求
      *
      * @param url 请求地址
@@ -244,7 +232,6 @@ public class OkHttpUtils {
         }
         // 设置上传的文件
         if (files != null && !files.isEmpty()) {
-
             for (Entry<String, File> entry : files.entrySet()) {
                 File file = entry.getValue();
                 String contentType = null;
@@ -266,6 +253,7 @@ public class OkHttpUtils {
                 }
             }
         }
+
         RequestBody requestBody = builder.build();
         Request request = new Request.Builder().url(url).headers(headers).post(requestBody).build();
         return client.newCall(request);

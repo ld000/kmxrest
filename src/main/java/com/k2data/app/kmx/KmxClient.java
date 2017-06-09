@@ -65,7 +65,7 @@ public class KmxClient {
             }
 
             if (cond.getHandleResponse()) {
-                return (T) handleResponse(cond, url, raw, response, null);
+                return (T) handleResponse(cond, raw, response, null);
             }
 
             if(!response.isSuccessful()) {
@@ -82,104 +82,121 @@ public class KmxClient {
     }
 
     public static void async(final KmxCond cond, final KmxResponseHandler handler) {
-        final String url = cond.getUrl();
-        final Map<String, String> params = cond.getParams();
-        final String raw = params.get("query").replace("%2B", "+");;
-
-        Callback callback = null;
         switch (cond.getRequestType()) {
             case GET:
-                callback = new Callback() {
-
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        logger.info(String.format("Kmx async get callback. url: %s", url));
-                        if (logger.isDebugEnabled()) {
-                            logger.debug(String.format("params: %s", params));
-                        }
-
-                        if (cond.getHandleResponse()) {
-                            handleResponse(cond, url, params.toString(), response, handler);
-                        }
-
-                        if(!response.isSuccessful()) {
-                            throw new KmxException(String.format("Request Kmx error! response code: %d, url: %s, params: %s",
-                                    response.code(),
-                                    url,
-                                    raw));
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        logger.error(String.format("Kmx get error! url: %s", call.request().url().toString()), e);
-                    }
-                };
-                OkHttpUtils.get(client, url, params, callback);
+                asyncGet(cond, handler);
                 break;
             case POST:
-                callback = new Callback() {
-
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        logger.info(String.format("Kmx async post callback. url: %s", url));
-                        if (logger.isDebugEnabled()) {
-                            logger.debug(String.format("raw: %s", raw));
-                        }
-
-                        if (cond.getHandleResponse()) {
-                            handleResponse(cond, url, raw, response, handler);
-                        }
-
-                        if(!response.isSuccessful()) {
-                            throw new KmxException(String.format("Request Kmx error! response code: %d, url: %s, params: %s",
-                                    response.code(),
-                                    url,
-                                    raw));
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        logger.error(String.format("Kmx post error! url: %s", call.request().url().toString()), e);
-                    }
-                };
-                OkHttpUtils.post(url, MediaType.parse("application/json"), raw, callback);
+                asyncPost(cond, handler);
                 break;
             case PUT:
-                callback = new Callback() {
-
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        logger.info(String.format("Kmx async put callback. url: %s", url));
-                        if (logger.isDebugEnabled()) {
-                            logger.debug(String.format("raw: %s", raw));
-                        }
-
-                        if (cond.getHandleResponse()) {
-                            handleResponse(cond, url, raw, response, handler);
-                        }
-
-                        if(!response.isSuccessful()) {
-                            throw new KmxException(String.format("Request Kmx error! response code: %d, url: %s, params: %s",
-                                    response.code(),
-                                    url,
-                                    raw));
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        logger.error(String.format("Kmx put error! url: %s", call.request().url().toString()), e);
-                    }
-                };
-                OkHttpUtils.put(url, MediaType.parse("application/json"), raw, callback);
+                asyncPut(cond, handler);
                 break;
             case DELETE:
                 break;
         }
+    }
 
+    private static void asyncGet(final KmxCond cond, final KmxResponseHandler handler) {
+        final String url = cond.getUrl();
+        final Map<String, String> params = cond.getParams();
+        final String raw = params.get("query").replace("%2B", "+");
+
+        Callback callback = new Callback() {
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                logger.info(String.format("Kmx async get callback. url: %s", url));
+                if (logger.isDebugEnabled()) {
+                    logger.debug(String.format("params: %s", params));
+                }
+
+                if (cond.getHandleResponse()) {
+                    handleResponse(cond, params.toString(), response, handler);
+                }
+
+                if(!response.isSuccessful()) {
+                    throw new KmxException(String.format("Request Kmx error! response code: %d, url: %s, params: %s",
+                            response.code(),
+                            url,
+                            raw));
+                }
+            }
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                logger.error(String.format("Kmx get error! url: %s", call.request().url().toString()), e);
+            }
+        };
         OkHttpUtils.get(client, url, params, callback);
+    }
+
+    private static void asyncPost(final KmxCond cond, final KmxResponseHandler handler) {
+        final String url = cond.getUrl();
+        final Map<String, String> params = cond.getParams();
+        final String raw = params.get("query").replace("%2B", "+");
+
+        Callback callback = new Callback() {
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                logger.info(String.format("Kmx async post callback. url: %s", url));
+                if (logger.isDebugEnabled()) {
+                    logger.debug(String.format("raw: %s", raw));
+                }
+
+                if (cond.getHandleResponse()) {
+                    handleResponse(cond, raw, response, handler);
+                }
+
+                if(!response.isSuccessful()) {
+                    throw new KmxException(String.format("Request Kmx error! response code: %d, url: %s, params: %s",
+                            response.code(),
+                            url,
+                            raw));
+                }
+            }
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                logger.error(String.format("Kmx post error! url: %s", call.request().url().toString()), e);
+            }
+        };
+        OkHttpUtils.post(url, MediaType.parse("application/json"), raw, callback);
+    }
+
+    private static void asyncPut(final KmxCond cond, final KmxResponseHandler handler) {
+        final String url = cond.getUrl();
+        final Map<String, String> params = cond.getParams();
+        final String raw = params.get("query").replace("%2B", "+");
+
+        Callback callback = new Callback() {
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                logger.info(String.format("Kmx async put callback. url: %s", url));
+                if (logger.isDebugEnabled()) {
+                    logger.debug(String.format("raw: %s", raw));
+                }
+
+                if (cond.getHandleResponse()) {
+                    handleResponse(cond, raw, response, handler);
+                }
+
+                if(!response.isSuccessful()) {
+                    throw new KmxException(String.format("Request Kmx error! response code: %d, url: %s, params: %s",
+                            response.code(),
+                            url,
+                            raw));
+                }
+            }
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                logger.error(String.format("Kmx put error! url: %s", call.request().url().toString()), e);
+            }
+        };
+        OkHttpUtils.put(url, MediaType.parse("application/json"), raw, callback);
     }
 
     /**
@@ -191,7 +208,8 @@ public class KmxClient {
      * @throws IOException
      */
     @SuppressWarnings("unchecked")
-    private static Object handleResponse(KmxCond cond, String url, String raw, Response response, KmxResponseHandler handler) throws IOException {
+    private static Object handleResponse(KmxCond cond, String raw, Response response, KmxResponseHandler handler) throws IOException {
+        final String url = cond.getUrl();
         String responseStr = response.body().string();
 
         if (KmxClientUtils.isBlank(responseStr)) {
