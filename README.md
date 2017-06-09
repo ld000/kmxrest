@@ -1,5 +1,7 @@
 # 调用 Kmx rest api 通用接口
 
+[![codebeat badge](https://codebeat.co/badges/9bbe6725-395c-4d83-8bc2-808250fe86d6)](https://codebeat.co/projects/github-com-ld000-kmxrest-master)
+
 ## 支持的版本
 
 v1.2.0
