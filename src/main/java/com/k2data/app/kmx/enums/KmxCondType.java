@@ -12,6 +12,7 @@ public enum KmxCondType {
     dataStreams,
     assets,
     fieldGroups,
-    postData
+    postData,
+    streamRules
 
 }

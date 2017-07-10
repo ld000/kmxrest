@@ -78,6 +78,16 @@ public class KmxCond {
         return new PostDataBuilder(initParams);
     }
 
+    /**
+     * 实时数据处理阈值接口
+     *
+     * @param initParams
+     * @return
+     */
+    public static RuleBuilder streamRule(KmxInitParams initParams) {
+        return new RuleBuilder(initParams);
+    }
+
     public String getUrl() {
         return url;
     }
