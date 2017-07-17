@@ -28,6 +28,10 @@ public class KmxCond {
         return new DataRowsV4Builder(initParams);
     }
 
+    public static DataRowsRealTimeV4Builder dataRowsRealTime(KmxInitParams initParams) {
+        return new DataRowsRealTimeV4Builder(initParams);
+    }
+
     /**
      * Data-points restful api
      *
@@ -46,6 +50,10 @@ public class KmxCond {
      */
     public static DataStreamsV4Builder dataStreams(KmxInitParams initParams) {
         return new DataStreamsV4Builder(initParams);
+    }
+
+    public static DataStreamsRealTimeV4Builder dataStreamsRealTime(KmxInitParams initParams) {
+        return new DataStreamsRealTimeV4Builder(initParams);
     }
 
     /**

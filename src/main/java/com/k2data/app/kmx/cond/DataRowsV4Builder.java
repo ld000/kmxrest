@@ -17,34 +17,34 @@ import java.util.*;
  */
 public class DataRowsV4Builder extends KmxCondBuilder {
 
-    private KmxInitParams initParams;
+    protected KmxInitParams initParams;
 
-    private String fieldGroup;
-    private String start;
-    private String end;
-    private Set<String> fields = new HashSet<>();
+    protected String fieldGroup;
+    protected String start;
+    protected String end;
+    protected Set<String> fields = new HashSet<>();
 
-    private List<String> valueFilters = new ArrayList<>();
-    private List<String> valueTrans = new ArrayList<>();
+    protected List<String> valueFilters = new ArrayList<>();
+    protected List<String> valueTrans = new ArrayList<>();
 
-    private String idValue;
-    private List<String> orIdValue = new ArrayList<>();
-    private List<String> andIdValue = new ArrayList<>();
-    private List<String> orNonIdFieldFilter = new ArrayList<>();
-    private List<String> andNonIdFieldFilter = new ArrayList<>();
+    protected String idValue;
+    protected List<String> orIdValue = new ArrayList<>();
+    protected List<String> andIdValue = new ArrayList<>();
+    protected List<String> orNonIdFieldFilter = new ArrayList<>();
+    protected List<String> andNonIdFieldFilter = new ArrayList<>();
 
-    private List<String> aggregations = new ArrayList<>();
-    private String interval;
-    private Boolean naturalTimeBoundary;
-    private Object fill;
+    protected List<String> aggregations = new ArrayList<>();
+    protected String interval;
+    protected Boolean naturalTimeBoundary;
+    protected Object fill;
 
-    private String order = "asc";   // 排序
-    private Integer size;    // 每页大小
-    private Integer page;    // 第几页
+    protected String order = "asc";   // 排序
+    protected Integer size;    // 每页大小
+    protected Integer page;    // 第几页
 
-    private String resultFormatIso;
+    protected String resultFormatIso;
 
-    private RequestType requestType = RequestType.POST;
+    protected RequestType requestType = RequestType.POST;
 
     public DataRowsV4Builder(KmxInitParams initParams) {
         this.initParams = initParams;
