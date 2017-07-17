@@ -9,9 +9,7 @@ public enum KmxCondType {
 
     dataPoints,
     dataRows,
-    dataRowsRealTime,
     dataStreams,
-    dataStreamsRealTime,
     assets,
     fieldGroups,
     postData,

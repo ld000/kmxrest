@@ -18,6 +18,7 @@ import java.util.*;
 public class DataRowsV4Builder extends KmxCondBuilder {
 
     protected KmxInitParams initParams;
+    private String url;
 
     protected String fieldGroup;
     protected String start;
@@ -100,7 +101,7 @@ public class DataRowsV4Builder extends KmxCondBuilder {
         params.put("query", paramsSb);
 
         KmxCond cond = new KmxCond();
-        cond.setUrl(initParams.getUrls().get(KmxCondType.dataRows));
+        cond.setUrl(url == null ? initParams.getUrls().get(KmxCondType.dataRows) : url);
         cond.setParams(params);
         cond.setClazz(DataRows.class);
         cond.setRequestType(requestType);
@@ -115,6 +116,11 @@ public class DataRowsV4Builder extends KmxCondBuilder {
 
     public DataRowsV4Builder get() {
         this.requestType = RequestType.GET;
+        return this;
+    }
+
+    public DataRowsV4Builder url(String url) {
+        this.url = url;
         return this;
     }
 

@@ -15,6 +15,7 @@ import java.util.*;
 public class DataStreamsV4Builder extends KmxCondBuilder {
 
     protected KmxInitParams initParams;
+    private String url;
 
     protected String fieldGroup;
     protected String start;
@@ -87,7 +88,7 @@ public class DataStreamsV4Builder extends KmxCondBuilder {
         params.put("query", paramsSb);
 
         KmxCond cond = new KmxCond();
-        cond.setUrl(initParams.getUrls().get(KmxCondType.dataStreams));
+        cond.setUrl(url == null ? initParams.getUrls().get(KmxCondType.dataStreams) : url);
         cond.setParams(params);
         cond.setClazz(DataStreams.class);
         cond.setRequestType(requestType);
@@ -102,6 +103,11 @@ public class DataStreamsV4Builder extends KmxCondBuilder {
 
     public DataStreamsV4Builder get() {
         this.requestType = RequestType.GET;
+        return this;
+    }
+
+    public DataStreamsV4Builder url(String url) {
+        this.url = url;
         return this;
     }
 

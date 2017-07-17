@@ -18,6 +18,7 @@ import java.util.*;
 public class DataPointsV4Builder extends KmxCondBuilder {
 
     private KmxInitParams initParams;
+    private String url;
 
     private String fieldGroup;
     private String sampleTime;
@@ -65,7 +66,7 @@ public class DataPointsV4Builder extends KmxCondBuilder {
         params.put("query", paramsSb);
 
         KmxCond cond = new KmxCond();
-        cond.setUrl(initParams.getUrls().get(KmxCondType.dataPoints));
+        cond.setUrl(url == null ? initParams.getUrls().get(KmxCondType.dataPoints) : url);
         cond.setParams(params);
         cond.setClazz(DataPoints.class);
         cond.setRequestType(requestType);
@@ -80,6 +81,11 @@ public class DataPointsV4Builder extends KmxCondBuilder {
 
     public DataPointsV4Builder get() {
         this.requestType = RequestType.GET;
+        return this;
+    }
+
+    public DataPointsV4Builder url(String url) {
+        this.url = url;
         return this;
     }
 
