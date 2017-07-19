@@ -14,33 +14,33 @@ import java.util.*;
  */
 public class DataStreamsV4Builder extends KmxCondBuilder {
 
-    protected KmxInitParams initParams;
+    private KmxInitParams initParams;
     private String url;
 
-    protected String fieldGroup;
-    protected String start;
-    protected String end;
-    protected Set<String> fields = new HashSet<>();
+    private String fieldGroup;
+    private String start;
+    private String end;
+    private List<String> fields = new ArrayList<>();
 
-    protected List<String> valueFilters = new ArrayList<>();
-    protected List<String> valueTrans = new ArrayList<>();
+    private List<String> valueFilters = new ArrayList<>();
+    private List<String> valueTrans = new ArrayList<>();
 
-    protected String idValue;
-    protected List<String> orIdValue = new ArrayList<>();
-    protected List<String> andIdValue = new ArrayList<>();
+    private String idValue;
+    private List<String> orIdValue = new ArrayList<>();
+    private List<String> andIdValue = new ArrayList<>();
 
-    protected List<String> aggregations = new ArrayList<>();
-    protected String interval;
-    protected Boolean naturalTimeBoundary;
-    protected Object fill;
+    private List<String> aggregations = new ArrayList<>();
+    private String interval;
+    private Boolean naturalTimeBoundary;
+    private Object fill;
 
-    protected List<String> order = new ArrayList<>();   // 排序
-    protected Integer size;    // 每页大小 ，注:针对实时接口该字段为每个设备显示的最近点数
-    protected Integer page;    // 第几页
+    private List<String> order = new ArrayList<>();   // 排序
+    private Integer size;    // 每页大小 ，注:针对实时接口该字段为每个设备显示的最近点数
+    private Integer page;    // 第几页
 
-    protected String resultFormatIso;
+    private String resultFormatIso;
 
-    protected RequestType requestType = RequestType.POST;
+    private RequestType requestType = RequestType.POST;
 
     public DataStreamsV4Builder(KmxInitParams initParams) {
         this.initParams = initParams;
@@ -137,13 +137,8 @@ public class DataStreamsV4Builder extends KmxCondBuilder {
     }
 
     /* fields begin */
-    public DataStreamsV4Builder fields(Set<String> fields) {
-        this.fields = fields;
-        return this;
-    }
-
     public DataStreamsV4Builder fields(List<String> fields) {
-        this.fields = new HashSet<>(fields);
+        this.fields = new ArrayList<>(fields);
         return this;
     }
 

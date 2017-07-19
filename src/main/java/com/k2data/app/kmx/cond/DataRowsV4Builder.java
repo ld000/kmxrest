@@ -17,35 +17,36 @@ import java.util.*;
  */
 public class DataRowsV4Builder extends KmxCondBuilder {
 
-    protected KmxInitParams initParams;
+    private KmxInitParams initParams;
     private String url;
 
-    protected String fieldGroup;
-    protected String start;
-    protected String end;
-    protected Set<String> fields = new HashSet<>();
+    private String fieldGroup;
+    private String start;
+    private String end;
+    private List<String> fields = new ArrayList<>();
+    private Map<String, Object> idFields = new HashMap<>();
 
-    protected List<String> valueFilters = new ArrayList<>();
-    protected List<String> valueTrans = new ArrayList<>();
+    private List<String> valueFilters = new ArrayList<>();
+    private List<String> valueTrans = new ArrayList<>();
 
-    protected String idValue;
-    protected List<String> orIdValue = new ArrayList<>();
-    protected List<String> andIdValue = new ArrayList<>();
-    protected List<String> orNonIdFieldFilter = new ArrayList<>();
-    protected List<String> andNonIdFieldFilter = new ArrayList<>();
+    private String idValue;
+    private List<String> orIdValue = new ArrayList<>();
+    private List<String> andIdValue = new ArrayList<>();
+    private List<String> orNonIdFieldFilter = new ArrayList<>();
+    private List<String> andNonIdFieldFilter = new ArrayList<>();
 
-    protected List<String> aggregations = new ArrayList<>();
-    protected String interval;
-    protected Boolean naturalTimeBoundary;
-    protected Object fill;
+    private List<String> aggregations = new ArrayList<>();
+    private String interval;
+    private Boolean naturalTimeBoundary;
+    private Object fill;
 
-    protected String order = "asc";   // 排序
-    protected Integer size;    // 每页大小
-    protected Integer page;    // 第几页
+    private String order = "asc";   // 排序
+    private Integer size;    // 每页大小
+    private Integer page;    // 第几页
 
-    protected String resultFormatIso;
+    private String resultFormatIso;
 
-    protected RequestType requestType = RequestType.POST;
+    private RequestType requestType = RequestType.POST;
 
     public DataRowsV4Builder(KmxInitParams initParams) {
         this.initParams = initParams;
@@ -61,6 +62,12 @@ public class DataRowsV4Builder extends KmxCondBuilder {
         Assert.notNull(start, "Start must not be null");
         Assert.notNull(end, "End must not be null");
 
+        StringBuilder idFilter = new StringBuilder(obj(initParams.getIdField(), objField(Sign.EQ.getValue(), idValue)));
+        for (Map.Entry<String, Object> entry : idFields.entrySet()) {
+            idFilter.append(",");
+            idFilter.append(obj(entry.getKey(), objField(Sign.EQ.getValue(), entry.getValue())));
+        }
+
         String paramsSb = "{" + noSignList(
                 objField("fieldGroup", fieldGroup),
                 list("fields", new ArrayList<>(fields), true),
@@ -72,7 +79,8 @@ public class DataRowsV4Builder extends KmxCondBuilder {
                 list("valueTrans", valueTrans),
                 obj("coValueFilter",
                         obj("idFieldFilter",
-                                obj(initParams.getIdField(), objField(Sign.EQ.getValue(), idValue)),
+//                                obj(initParams.getIdField(), objField(Sign.EQ.getValue(), idValue)),
+                                idFilter.toString(),
                                 list(Sign.OR.getValue(), orIdValue),
                                 list(Sign.AND.getValue(), andIdValue)
                         ),
@@ -150,13 +158,8 @@ public class DataRowsV4Builder extends KmxCondBuilder {
     }
 
     /* fields begin */
-    public DataRowsV4Builder fields(Set<String> fields) {
-        this.fields = fields;
-        return this;
-    }
-
     public DataRowsV4Builder fields(List<String> fields) {
-        this.fields = new HashSet<>(fields);
+        this.fields = new ArrayList<>(fields);
         return this;
     }
 
@@ -173,6 +176,11 @@ public class DataRowsV4Builder extends KmxCondBuilder {
 
     public DataRowsV4Builder idValue(String idValue) {
         this.idValue = idValue;
+        return this;
+    }
+
+    public DataRowsV4Builder idField(String key, Object value) {
+        this.idFields.put(key, value);
         return this;
     }
 

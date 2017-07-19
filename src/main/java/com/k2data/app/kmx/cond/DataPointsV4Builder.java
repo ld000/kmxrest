@@ -21,8 +21,9 @@ public class DataPointsV4Builder extends KmxCondBuilder {
     private String url;
 
     private String fieldGroup;
+    private Map<String, Object> idFields = new HashMap<>();
     private String sampleTime;
-    private Set<String> fields = new HashSet<>();
+    private List<String> fields = new ArrayList<>();
 
     private String idValue;
     private List<String> orIdValue = new ArrayList<>();
@@ -105,13 +106,8 @@ public class DataPointsV4Builder extends KmxCondBuilder {
     }
 
     /* fields begin */
-    public DataPointsV4Builder fields(Set<String> fields) {
-        this.fields = fields;
-        return this;
-    }
-
     public DataPointsV4Builder fields(List<String> fields) {
-        this.fields = new HashSet<>(fields);
+        this.fields = new ArrayList<>(fields);
         return this;
     }
 
@@ -144,6 +140,11 @@ public class DataPointsV4Builder extends KmxCondBuilder {
 
     public DataPointsV4Builder idValue(String idValue) {
         this.idValue = idValue;
+        return this;
+    }
+
+    public DataPointsV4Builder idField(String key, Object value) {
+        this.idFields.put(key, value);
         return this;
     }
 
